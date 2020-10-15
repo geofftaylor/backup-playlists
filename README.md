@@ -13,7 +13,7 @@ The script will create a subdirectory for each day that it runs. That directory 
 ## File Format
 In version 1.0.0, the files were exported in the last format that had been manually selected. For example, if you manually exported a playlist as an M3U file, the script would also create its backups as M3U files until the format was manually changed.
 
-In version 1.1.0, the export format is explicity set to XML by default. To change the format, find this line
+In version 1.1.0, the export format is explicitly set to XML by default. To change the format, find this line
 
 `set backupFormat to "XML"`
 
