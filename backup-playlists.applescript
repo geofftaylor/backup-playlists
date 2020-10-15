@@ -31,15 +31,16 @@ if runBackup = "No" or gaveUp then
 	error number -128
 end if
 
-set backupFolder to "Playlist Backup" -- The name of the folder that will contain the backups, grouped in subfolders by date
-set baseFolder to POSIX path of (path to documents folder) & backupFolder -- backupFolder is a subfolder of ~/Documents
-set baseFolderPath to POSIX file baseFolder -- Get baseFolder's POSIX path so that we can concatenate it with the current date
-set currentDate to do shell script "date +'%Y%m%d'" -- Get the current date in YYYYMMDD format
+set backupFormat to "XML" -- The format of the backup file. This can be changed to any format listed in the Music app's "Save" window, e.g., "M3U".
+set backupFolder to "Playlist Backup" -- The name of the folder that will contain the backups, grouped in subfolders by date.
+set baseFolder to POSIX path of (path to documents folder) & backupFolder -- backupFolder is a subfolder of ~/Documents.
+set baseFolderPath to POSIX file baseFolder -- Get baseFolder's POSIX path so that we can concatenate it with the current date.
+set currentDate to do shell script "date +'%Y%m%d'" -- Get the current date in YYYYMMDD format.
 set saveFolder to POSIX path of baseFolderPath & "/" & currentDate -- The path to today's folder
-set baseFolderExists to pathExists(baseFolderPath) -- Check if baseFolder exists
-set saveFolderExists to pathExists(saveFolder) -- Check if saveFolder exists
+set baseFolderExists to pathExists(baseFolderPath) -- Check if baseFolder exists.
+set saveFolderExists to pathExists(saveFolder) -- Check if saveFolder exists.
 
-set the clipboard to saveFolder -- Put saveFolder's path on the clipboard so we can use it later
+set the clipboard to saveFolder -- Put saveFolder's path on the clipboard so we can use it later.
 
 tell application "Finder"
 	if baseFolderExists then
@@ -54,13 +55,13 @@ end tell
 
 tell application "Music"
 	activate
-	set userPlaylists to (name of every user playlist whose name does not start with "Purchased" and smart is false) -- Get all user playlists except "Purchased on iPhone," etc. and smart playlists
+	set userPlaylists to (name of every user playlist whose name does not start with "Purchased" and smart is false) -- Get all user playlists except "Purchased on iPhone," etc. and smart playlists.
 end tell
 
 (* The Music app's AppleScipt interface doesn't offer a way to export playlists, so we have to script the UI using System Events.
     This block iterates over the playlists in the Music app. When it finds a playlist with a name that matches userPlaylists,
-    it selects the playlist, clicks File > Library > Export Playlist, and saves the playlist as an XML file in saveFolder.
-   This uses the default file name, which is <playlist name>.xml.
+    it selects the playlist, clicks File > Library > Export Playlist, and saves the playlist in saveFolder.
+   This uses the default file name, which is <playlist name>.<backupFormat>.
 *)
 tell application "System Events"
 	tell its process "Music"
@@ -81,11 +82,17 @@ tell application "System Events"
 													click menu item "Export Playlist…" of menu "Library" of menu item "Library" of menu "File" of menu bar 1
 													delay 2
 													tell its window "Save"
-														keystroke "G" using {command down, shift down} -- Shift-Cmd-G to change directories using the "Go to Folder" dialog
+														keystroke "G" using {command down, shift down} -- Shift-Cmd-G to change directories using the "Go to Folder" dialog.
 														delay 2
-														keystroke (the clipboard) -- Paste saveFolder's location into the "Go to Folder" dialog
+														keystroke (the clipboard) -- Paste saveFolder's location into the "Go to Folder" dialog.
 														delay 2
 														keystroke return
+														delay 2
+														tell its pop up button 2
+															click -- Click the "Format" popup menu.
+															delay 2
+															click menu item backupFormat of menu 1 -- Select the format specified by backupFormat.
+														end tell
 														delay 2
 														click button "Save"
 														delay 1
