@@ -1,5 +1,9 @@
-# Back up your Music playlists on macOS Catalina
-Since there's no way to automatically back up individual Music playlists on macOS Catalina, this script uses UI scripting to automate the exporting of playlists. Note that your Mac must be awake and the Music app must have focus the entire time that the script is running. To prevent the script from running while you're doing other things, the first thing it does is ask if you want to run the backup. Click "Yes" to run the backup. Click "No," and the script will quit. (If you don't do anything for 10 seconds, the script will quit.)
+# Back up your Music playlists on macOS Catalina and Big Sur
+Since there's no way to automatically back up individual Music playlists on macOS Catalina and Big Sur, this script uses UI scripting to automate the exporting of playlists. Note that your Mac must be awake and the Music app must have focus the entire time that the script is running. To prevent the script from running while you're doing other things, the first thing it does is ask if you want to run the backup. Click "Yes" to run the backup. Click "No," and the script will quit. (If you don't do anything for 10 seconds, the script will quit.)
+
+## Scripts
+* Use `backup-playlists-catalina.applescript` for macOS Catalina.
+* Use `backup-playlists-big-sur.applescript` for macOS Big Sur.
 
 ## Backup Location
 The script saves the playlist files in a subdirectory of your `Documents` folder called `Playlist Backup`. If the `Playlist Backup` directory doesn't exist, the script will create it. If you want to change the subdirectory, find this line
